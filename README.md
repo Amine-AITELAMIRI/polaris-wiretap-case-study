@@ -63,11 +63,13 @@ The project received **mentorship from Thales** as part of the academic program.
 
 Use a Python interpreter compatible with your pyAFF3CT and pyStreamPU builds. The repository does not pin versions of these compiled bindings or provide a lockfile.
 
+For a quick code check **without** the compiled bindings or a running server, run the construction and gallery-path tests:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # macOS/Linux
 python -m pip install -r requirements-python.txt
-python -m pytest tests/test_constructions.py
+python -m pytest tests/test_constructions.py tests/test_gallery_paths.py
 ```
 
 The construction tests above use only the standard Python dependencies. To run the end-to-end simulation, install compatible [`py_aff3ct`](https://github.com/aff3ct/py_aff3ct) and [`pystreampu`](https://github.com/aff3ct/pystreampu) bindings for **that same interpreter**; they provide the `aff3ct` and `streampu` imports used here. They are not included in `requirements-python.txt` because this project does not provide a verified one-command installation for them. Check the environment before starting the application:

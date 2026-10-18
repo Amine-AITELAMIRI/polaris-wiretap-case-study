@@ -6,6 +6,7 @@ import socket
 import qrcode
 import sys
 from io import BytesIO
+from gallery_paths import resolve_gallery_image
 
 PORT = 5001
 
@@ -251,7 +252,12 @@ def send():
 
     try:
         if type_msg == "IMAGE":
-            chemin_image = os.path.join(app.static_folder, "gallery", image_filename)
+            try:
+                chemin_image = resolve_gallery_image(
+                    os.path.join(app.static_folder, "gallery"), image_filename
+                )
+            except ValueError:
+                return jsonify(ok=False, error="Image de galerie invalide"), 400
             
             with open(chemin_image, "rb") as image_stream:
                 img_np, dim = fx_interface.image_to_numpy(image_stream)
