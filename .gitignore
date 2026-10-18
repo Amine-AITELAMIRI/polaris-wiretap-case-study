@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.env
+
+# AFF3CT & Simulation
+*.log
+*.dat
+*.raw
+build/
+qrcode_app*.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dossier
+json/
+json/*

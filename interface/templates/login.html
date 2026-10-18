@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POLARIS — Connexion</title>
+    <link rel="icon" href="/static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="login-wrap">
+
+    <img src="/static/logo.png" class="login-logo" alt="POLARIS" onerror="this.style.display='none'">
+    <h1 class="login-title">PROJET POLARIS</h1>
+    <p class="login-sub">Polar codes for Overcoming Leaks in Airwave Radio and Information Security</p>
+    <div class="login-sep"></div>
+
+    {% if error %}
+    <p style="color:var(--red); font-size:0.9rem; margin-bottom:16px;">⚠ {{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="/">
+        <div class="role-grid">
+
+            <button class="role-btn role-alice" name="role" value="alice" type="submit" data-desc="Émetteur" {% if roles_online.alice %}disabled title="Alice est déjà connectée"{% endif %}>
+                <span class="role-icon">◉</span>
+                <span class="role-name">ALICE</span>
+                <span class="role-desc">{% if roles_online.alice %}● Connectée{% else %}Émetteur{% endif %}</span>
+            </button>
+
+            <button class="role-btn role-bob" name="role" value="bob" type="submit" data-desc="Récepteur légitime" {% if roles_online.bob %}disabled title="Bob est déjà connecté"{% endif %}>
+                <span class="role-icon">◎</span>
+                <span class="role-name">BOB</span>
+                <span class="role-desc">{% if roles_online.bob %}● Connecté{% else %}Récepteur légitime{% endif %}</span>
+            </button>
+
+            <button class="role-btn role-eve" name="role" value="eve" type="submit" data-desc="Espion" {% if roles_online.eve %}disabled{% endif %}>
+                <span class="role-icon">◈</span>
+                <span class="role-name">EVE</span>
+                <span class="role-desc">{% if roles_online.eve %}● Connecté{% else %}Espion{% endif %}</span>
+            </button>
+
+        </div>
+    </form>
+
+
+    <footer class="team-footer">
+        <div class="team-school">Enseirb-MatMeca — Télécom 2A</div>
+        <div class="team-grid">
+            <div class="team-col">
+                <span class="team-role-label">Professeur encadrant</span>
+                <span class="team-names">Romain Tajan</span>
+            </div>
+            <div class="team-col">
+                <span class="team-role-label">Chef de Projet</span>
+                <span class="team-names">Karim Diop</span>
+            </div>
+            <div class="team-col">
+                <span class="team-role-label">Pôle Com. Num.</span>
+                <span class="team-names">Amine Aït El Amiri · Ethan Garchery · Karim Diop</span>
+            </div>
+            <div class="team-col">
+                <span class="team-role-label">Pôle Dév. Logiciel</span>
+                <span class="team-names">Meryem Benzakri · Assia Ouezghari</span>
+            </div>
+            <div class="team-col">
+                <span class="team-role-label">Pôle Interface</span>
+                <span class="team-names">Jean Maureille · Mohamed Badra</span>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<script src="/static/script.js"></script>
+<script>loginSyncLoop();</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POLARIS — {{ role|upper }}</title>
+    <link rel="icon" href="/static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="terminal-body">
+
+<header class="topbar">
+    <div class="topbar-left">
+        <img src="/static/favicon.ico" class="topbar-logo" alt="" onerror="this.style.display='none'">
+        <span class="topbar-title">POLARIS</span>
+    </div>
+    <span class="status-badge status-wait" id="status-badge">● EN ATTENTE</span>
+</header>
+
+<aside class="sidebar">
+
+    <div class="identity-block">
+        <span class="identity-label">Terminal actif</span>
+        <span class="identity-role role-{{ role }}">
+            {% if role == "alice" %}◉ ALICE [TX]
+            {% elif role == "bob" %}◎ BOB [RX]
+            {% else %}◈ EVE [ESPION]{% endif %}
+        </span>
+    </div>
+
+    <hr class="sidebar-sep" id="sp1">
+
+    {% if role == "alice" %}
+    <div class="block-light">
+        <p class="cfg-section">Dimensions polaires</p>
+        <div class="field-group">
+            <label class="field-label">N — taille du code</label>
+            <select name="N">
+                {% for n in [128, 256, 512, 1024, 2048,4096,8192,16384] %}
+                <option {% if n == defaut.N %}selected{% endif %}>{{ n }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="field-group" style="display: none;">
+            <label class="field-label">K — bits d'information</label>
+            <select name="K">
+                {% for k in [8,16,32,64,128, 256, 512, 1024, 2048,4096,8192] %}
+                <option {% if k == defaut.K %}selected{% endif %}>{{ k }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="block-light">
+        <p class="cfg-section" style="margin-top: 0;display: none;">Mode de liaison</p>
+        
+        <div class="toggle-container" style="width: 100%;display: none;">
+            <span id="lbl-online" class="toggle-label">EN LIGNE</span>
+            <label class="cyber-switch">
+                <input type="checkbox" id="conn-toggle" checked onchange="toggleLiaisonMode()">
+                <span class="cyber-slider"></span>
+            </label>
+            <span id="lbl-offline" class="toggle-label active-offline">SIMULATION</span>
+        </div>
+
+        <div id="btn-config-container" style="width: 100%; margin-top: 10px;">
+            <button type="button" class="btn btn-amber btn-full" style="font-size: 0.8rem;" onclick="openTacticalModal()">
+                ⚙ CONFIGURER LE CANAL
+            </button>
+        </div>
+    </div>
+
+    <button class="btn btn-cyan btn-full" id="btn-init" style="margin-top: 14px; margin-bottom: 10px; font-weight: bold;" onclick="configure()">
+        ↯ INITIALISER
+    </button>
+
+    <p class="status-msg" id="cfg-status"></p>
+    {% endif %}
+
+    <div class="sidebar-spacer"></div>
+    <a href="/logout" class="btn btn-red btn-full" id="btn-logout">⏏ DÉCONNEXION</a>
+
+</aside>
+
+<main class="main-panel">
+
+    {% if role == "alice" %}
+
+    <div id="locked-banner" class="locked-banner" {% if configured %}style="display:none"{% endif %}>
+        <div class="locked-icon">⚠</div>
+        <h3>CANAL NON INITIALISÉ</h3>
+        <p>Ajustez les paramètres et les positions sur la carte (<strong>CONFIGURER LE CANAL</strong>)<br>
+           puis cliquez sur <strong>INITIALISER</strong>.</p>
+    </div>
+
+    <div id="tx-form" {% if not configured %}style="display:none"{% endif %}>
+        <h2 class="section-title">📡 MODULE DE TRANSMISSION</h2>
+
+        <textarea id="msg-input" placeholder="Texte ou bits bruts (0/1)..."></textarea>
+        <div class="upload-zone" style="margin-top:14px; cursor: pointer;" onclick="openGalleryModal()">
+            <span id="upload-label">📂 Cliquer pour choisir une image</span>
+        </div>
+        <p class="upload-hint" id="upload-hint"></p>
+
+        <div class="send-row">
+            <button id="btn-send" class="btn btn-cyan" onclick="sendMessage()">
+                <span class="send-dot">●</span> ENVOYER LE PAQUET
+            </button>
+        </div>
+        <p class="status-msg" id="send-status"></p>
+        <div class="error-box" id="send-error" style="display:none"></div>
+        <button id="btn-stats" class="btn btn-cyan send-row" style="display: none; margin-top: 10px; border-color: var(--color-eve); justify-self: center;justify-content: center;" onclick="openStatsModal()">
+            BILAN DE SÉCURITÉ
+        </button>
+    </div>
+
+    {% elif role == "bob" %}
+
+    <h2 class="section-title">📻 RÉCEPTEUR LÉGITIME</h2>
+    <div class="rx-meta" id="rx-meta" style="display:none"></div>
+    <div class="terminal-card" id="rx-content">EN ATTENTE DE SIGNAL...</div>
+
+    {% elif role == "eve" %}
+
+    <h2 class="section-title">🕵️ RÉCEPTEUR ESPION</h2>
+    <div class="rx-meta" id="rx-meta" style="display:none"></div>
+    <div class="terminal-card terminal-card-eve" id="rx-content">AUCUNE INTERCEPTION EN COURS...</div>
+
+    {% endif %}
+
+</main>
+
+<div class="modal-overlay" id="tactical-modal-overlay">
+    <div class="modal-content-blue tactical-modal-content">
+        <div class="modal-header-blue">
+            <span class="modal-title-blue">⚙ CONFIGURATION DU CANAL</span>
+            <button class="error-popup-close" onclick="closeTacticalModal()">✕</button>
+        </div>
+        
+        <div class="tactical-modal-body">
+            <div id="tactical-setup" class="tactical-split-layout">
+                <div class="tactical-left">
+                    <p class="footer-hint">Glissez les nœuds ou éditez directement les champs. Les paramètres et la carte s'ajusteront.</p>
+                    <div class="map-container" id="tactical-map">
+
+                        <div class="node node-alice" id="node-alice" style="left: 50%; top: 20%;">A <div class="node-label">TX-ALICE</div></div>
+                        <div class="node node-bob" id="node-bob" style="left: 20%; top: 40%;">B <div class="node-label">RX-BOB</div></div>
+                        <div class="node node-eve" id="node-eve" style="left: 80%; top: 80%;">E <div class="node-label">ESP-EVE</div></div>
+
+
+                        <div class="radar-scan"></div>
+                        <div id="line-ab" class="distance-line line-ab"></div>
+                        <div id="line-ae" class="distance-line line-ae"></div>
+                        <div class="exclusion-zone zone-alice" id="zone-alice"></div>
+
+
+                    </div>
+                </div>
+
+                <div class="tactical-right">
+                    
+                    <div class="tactical-settings-header">
+                        <span class="tactical-settings-title">Réglages du Canal</span>
+                        <div class="toggle-container switch-margin-zero" style="display: none;">
+                            <span id="lbl-awgn" class="toggle-label">AWGN</span>
+                            <label class="cyber-switch">
+                                <input type="checkbox" id="canal-toggle" checked onchange="toggleCanalFields()">
+                                <span class="cyber-slider"></span>
+                            </label>
+                            <span id="lbl-bsc" class="toggle-label active-offline">BSC</span>
+                        </div>
+                    </div>
+
+                    <div class="tactical-panels-container">
+                        
+                        <div class="tactical-panel panel-bob">
+                            <div class="panel-distance">
+                                Distance (A-B) : <span class="info-data data-ab" id="display-ab">0</span> m
+                            </div>
+                            
+                            <div id="awgn-fields-bob" class="param-fields">
+                                <div class="field-group param-group">
+                                    <label class="field-label label-bob">Bob SNR (dB)</label>
+                                    <input type="number" name="snr_bob" id="input-snr-bob" step="0.01" oninput="onInputSyncWithRadar('B', 'AWGN')" onchange="clampValue(this, -100, 100)">
+                                </div>
+                            </div>
+                            <div id="bsc-fields-bob" class="param-fields param-active">
+                                <div class="field-group param-group">
+                                    <label class="field-label label-bob">Bob p (Probabilité)</label>
+                                    <input type="number" name="p_bob" id="input-p-bob" step="0.0001" oninput="onInputSyncWithRadar('B', 'BSC')" onchange="clampValue(this, 0.0001, 0.5)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tactical-panel panel-eve">
+                            <div class="panel-distance">
+                                Distance (A-E) : <span class="info-data data-ae" id="display-ae">0</span> m
+                            </div>
+                            
+                            <div id="awgn-fields-eve" class="param-fields">
+                                <div class="field-group param-group">
+                                    <label class="field-label label-eve">Eve SNR (dB)</label>
+                                    <input type="number" name="snr_eve" id="input-snr-eve" step="0.01" oninput="onInputSyncWithRadar('E', 'AWGN')" onchange="clampValue(this, -100, 100)">
+                                </div>
+                            </div>
+                            <div id="bsc-fields-eve" class="param-fields param-active">
+                                <div class="field-group param-group">
+                                    <label class="field-label label-eve">Eve p (Probabilité)</label>
+                                    <input type="number" name="p_eve" id="input-p-eve" step="0.0001" oninput="onInputSyncWithRadar('E', 'BSC')" onchange="clampValue(this, 0.0001, 0.5)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tactical-right-footer">
+                        <button class="btn btn-cyan btn-full" onclick="validateTacticalModal()">VALIDER</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gallery-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    
+    <div class="terminal-card" style="width: 90%; max-width: 900px; text-align: center; padding: 20px;">
+        <h3 style="margin-top: 0; color: var(--color-alice);">SÉLECTIONNER UNE IMAGE</h3>
+        
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin: 20px 0; gap: 15px;">
+            <img src="/static/gallery/Shannon.webp" width="128" height="128" style="cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border 0.2s;" onmouseover="this.style.borderColor='var(--color-alice)'" onmouseout="this.style.borderColor='transparent'" onclick="selectImage('Shannon.webp')">
+            <img src="/static/gallery/Tesla.webp" width="128" height="128" style="cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border 0.2s;" onmouseover="this.style.borderColor='var(--color-alice)'" onmouseout="this.style.borderColor='transparent'" onclick="selectImage('Tesla.webp')">
+        </div>
+
+        <button class="btn btn-red" onclick="closeGalleryModal()">ANNULER</button>
+    </div>
+</div>
+
+<div class="error-popup-overlay" id="error-overlay" style="display:none">
+    <div class="error-popup">
+
+        <div class="error-popup-header">
+            <span class="error-popup-title">⚠ Erreurs système</span>
+            <button class="error-popup-close" onclick="closeErrorPopup()">✕</button>
+        </div>
+
+        <div class="error-popup-body" id="error-popup-body">
+            </div>
+
+        <div class="error-popup-footer">
+            <button class="btn btn-red" onclick="clearErrors()">🗑 Effacer les erreurs</button>
+            <button class="btn btn-cyan" onclick="closeErrorPopup()">Fermer</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="stats-modal-overlay" class="tactical-modal-overlay modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    
+    <div class="tactical-modal terminal-card" style="width: 90%; max-width: 650px; background: rgba(0, 212, 255, 0.12); border: 1px solid var(--color-alice); box-shadow: 0 0 20px rgba(0,255,255,0.2); padding: 25px; position: relative;">
+        
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--color-alice); padding-bottom: 10px; margin-bottom: 20px;">
+            <span style="color: var(--color-alice); font-family: 'Rajdhani', sans-serif; font-weight: bold; letter-spacing: 2px;">
+                SIMULATION STATISTIQUES
+            </span>
+            <span style="color: #444; font-family: monospace;">POLARIS</span>
+        </div>
+        
+        <div id="stats-body" style="font-family: 'Share Tech Mono', monospace; line-height: 1.4; overflow-x: auto; max-height: 70vh;">
+            [ INITIALISATION DU CALCUL DES STATISTIQUES... ]
+        </div>
+
+        <div style="margin-top: 25px; text-align: right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <button class="btn" style="border-color: #ff4444; color: #ff4444; font-size: 0.8em;" onclick="closeStatsModal()">
+                FERMER_LE_TERMINAL
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+<script>
+    // Données injectées par Flask
+    const ROLE       = "{{ role }}";
+    const CONFIGURED = "{{ 'true' if configured else 'false' }}";
+    init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Standard Python dependencies. Install pyAFF3CT and pyStreamPU separately.
+Flask
+matplotlib
+numpy
+Pillow
+pytest
+qrcode
+requests
+scipy

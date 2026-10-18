@@ -1,0 +1,19 @@
+{
+    "nom": "INTERFACE_SESSION",
+    "mode_securise": true,
+    "amplification_confidentialite": false,
+    "simulation": true,
+    "N": 4096,
+    "K": 1024,
+    "parametres_simulation": {
+        "type_canal": "BSC",
+        "canal_bsc": {
+            "p_bob": 0.0052,
+            "p_eve": 0.009
+        },
+        "canal_awgn": {
+            "snr_bob": -0.14,
+            "snr_eve": -2.58
+        }
+    }
+}

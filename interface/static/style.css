@@ -1,0 +1,1211 @@
+/* ================================================================
+   POLARIS_WIRETAP — style.css
+================================================================ */
+
+/* ── Variables ──────────────────────────────────────────────── */
+:root {
+    --bg:         #030b12;
+    --panel:      #06121e;
+    --card:       #091828;
+    --input:      #040e18;
+    --card-lo:    #0918282c;
+
+    --cyan:       #00d4ff;
+    --cyan-lo:    rgba(0, 212, 255, 0.12);
+    --cyan-bd:    rgba(0, 212, 255, 0.28);
+    --cyan-glow:  0 0 24px rgba(0, 212, 255, 0.2);
+
+    --red:        #ff2d55;
+    --red-lo:     rgba(255, 45, 85, 0.12);
+    --red-bd:     rgba(255, 45, 85, 0.28);
+
+    --green:      #00f080;
+    --amber:      #ffb700;
+
+    --text:       #d8eeff;
+    --muted:      #5a8aa0;       /* plus clair qu'avant pour meilleur contraste */
+    --border:     rgba(0, 212, 255, 0.1);
+
+    --font-mono:  'Share Tech Mono', monospace;
+    --font-ui:    'Rajdhani', sans-serif;
+
+    --radius:     6px;
+    --radius-lg:  12px;
+    --sidebar-w:  320px;         /* plus large */
+    --topbar-h:   50px;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 20px;
+}
+
+/* Grille de fond */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.5;
+}
+
+/* ── Boutons ────────────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 26px;
+    border-radius: var(--radius);
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all 0.18s;
+    background: transparent;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.btn-cyan { color: var(--cyan); border-color: var(--cyan-bd); background: var(--cyan-lo); }
+.btn-cyan:hover {
+    background: rgba(0, 212, 255, 0.24);
+    border-color: var(--cyan);
+    box-shadow: var(--cyan-glow);
+    color: #fff;
+}
+
+.btn-red { color: var(--red); border-color: var(--red-bd); background: var(--red-lo); }
+.btn-red:hover {
+    background: rgba(255, 45, 85, 0.24);
+    border-color: var(--red);
+    box-shadow: 0 0 24px rgba(255, 45, 85, 0.18);
+    color: #fff;
+}
+
+.btn-amber { color: var(--amber); border-color: rgba(255,183,0,.3); background: rgba(255,183,0,.08); }
+.btn-amber:hover {
+    background: rgba(255, 183, 0, 0.2);
+    border-color: var(--amber);
+    color: #fff;
+}
+
+.btn:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+.btn-full { width: 100%; }
+
+/* ════════════════════════════════════════════════════════════
+   PAGE LOGIN
+════════════════════════════════════════════════════════════ */
+.login-wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px 20px;
+}
+
+.login-logo {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 22px rgba(0, 212, 255, 0.65));
+    animation: logo-glow 3s ease-in-out infinite;
+}
+
+@keyframes logo-glow {
+    0%, 100% { filter: drop-shadow(0 0 14px rgba(0, 212, 255, 0.5)); }
+    50%       { filter: drop-shadow(0 0 32px rgba(0, 212, 255, 0.95)); }
+}
+
+.login-title {
+    font-family: var(--font-ui);
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.33em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.login-sub {
+    font-size: 1.2rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+    max-width: 680px;
+    margin-bottom: 40px;
+}
+
+.login-sep {
+    width: 440px;
+    max-width: 90vw;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 32px;
+}
+
+.role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 580px;
+    max-width: 94vw;
+}
+
+.role-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 26px 14px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    font-family: var(--font-mono);
+}
+
+.role-btn:hover { transform: translateY(-3px); }
+.role-alice:hover { border-color: var(--cyan);  box-shadow: var(--cyan-glow); }
+.role-bob:hover   { border-color: var(--green); box-shadow: 0 0 24px rgba(0, 240, 128, 0.18); }
+.role-eve:hover   { border-color: var(--red);   box-shadow: 0 0 24px rgba(255, 45, 85, 0.16); }
+
+.role-icon { font-size: 1.8rem; }
+
+.role-name {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.role-alice .role-name { color: var(--cyan); }
+.role-bob   .role-name { color: var(--green); }
+.role-eve   .role-name { color: var(--red); }
+
+.role-desc { font-size: 1rem; color: var(--muted); }
+
+/* ════════════════════════════════════════════════════════════
+   LAYOUT TERMINAL
+════════════════════════════════════════════════════════════ */
+.terminal-body {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: var(--topbar-h) 1fr;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Topbar ─────────────────────────────────────────────── */
+.topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--cyan-bd);
+    background: rgba(3, 11, 18, 0.96);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { width: 34px; height: 34px; object-fit: contain; }
+
+.topbar-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.topbar-sep { color: var(--cyan); margin: 0 7px; }
+
+.status-badge {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 12px;
+    border-radius: 4px;
+    border: 1.5px solid;
+}
+
+.status-offline { color: var(--red);   border-color: rgba(255, 45, 85, 0.4);  background: rgba(255, 45, 85, 0.07); }
+.status-online  { color: var(--green); border-color: rgba(0, 240, 128, 0.4);  background: rgba(0, 240, 128, 0.07); }
+.status-wait    { color: var(--amber); border-color: rgba(255, 183, 0, 0.4);  background: rgba(255, 183, 0, 0.07); }
+
+/* ── Sidebar ────────────────────────────────────────────── */
+.sidebar {
+    grid-column: 1;
+    grid-row: 2;
+    background: var(--panel);
+    border-right: 1px solid var(--cyan-bd);
+    display: flex;
+    flex-direction: column;
+    padding: 18px 18px;
+    overflow-y: auto;
+}
+
+.identity-block {
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--cyan-bd);
+    border-radius: var(--radius);
+}
+
+.block-light {
+    background: var(--card-lo); /* Fond très légèrement transparent */
+    border: 1px solid var(--border); /* Bordure discrète */
+    border-radius: var(--radius);
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 0 15px rgba(0, 212, 255, 0.02); /* Léger halo interne */
+}
+
+.identity-label {
+    font-size: 0.75rem;       /* lisible */
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.identity-role {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1.4rem;
+    display: block;
+}
+
+.role-alice { color: var(--cyan); }
+.role-bob   { color: var(--green); }
+.role-eve   { color: var(--red); }
+
+.sidebar-sep { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.sidebar-spacer { flex: 1; }
+
+/* ── Config sidebar — tailles cohérentes ────────────────── */
+.cfg-section {
+    font-size: 1rem;
+    text-align: center;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text);
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.radio-group input[type="radio"] {
+    accent-color: var(--cyan);
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 7px;
+}
+
+.field-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+select,
+input[type="number"] {
+    background: var(--input);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 5px 9px;
+    width: 100%;
+    outline: none;
+}
+
+select:focus,
+input[type="number"]:focus {
+    border-color: var(--cyan-bd);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
+}
+
+/* Messages de statut (sidebar + main) */
+.status-msg {
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.status-ok      { color: var(--green); }
+.status-error   { color: var(--red); }
+.status-pending { color: var(--amber); }
+
+/* ── Contenu principal ──────────────────────────────────── */
+.main-panel {
+    grid-column: 2;
+    grid-row: 2;
+    overflow-y: auto;
+    padding: 28px 32px;
+}
+
+.section-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+}
+
+/* ── Bannière verrou ────────────────────────────────────── */
+.locked-banner {
+    text-align: center;
+    padding: 56px 24px;
+    margin-top: 8px;
+    background: rgba(255, 45, 85, 0.05);
+    border: 1.5px solid var(--red-bd);
+    border-radius: var(--radius-lg);
+}
+
+.locked-icon { font-size: 2rem; color: var(--red); margin-bottom: 12px; }
+
+.locked-banner h3 {
+    font-family: var(--font-ui);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.locked-banner p { font-size: 1rem; color: var(--muted); line-height: 1.7; }
+
+/* ── Formulaire TX ──────────────────────────────────────── */
+textarea {
+    width: 100%;
+    background: var(--input);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    padding: 12px 14px;
+    min-height: 150px;
+    resize: vertical;
+    outline: none;
+    caret-color: var(--cyan);
+    line-height: 1.7;
+}
+
+textarea:focus {
+    border-color: var(--cyan-bd);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
+}
+
+textarea::placeholder { color: var(--muted); }
+
+.upload-zone {
+    position: relative;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--input);
+    padding: 24px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.upload-zone:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-lo); }
+
+.upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-hint { font-size: 0.85rem; color: var(--green); min-height: 20px; }
+
+.send-row { display: flex; justify-content: center; margin-top: 20px; }
+#btn-send { font-size: 1rem; padding: 13px 44px; }
+
+.send-dot { animation: blink 1.1s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.error-box {
+    background: rgba(255, 45, 85, 0.07);
+    border: 1.5px solid var(--red-bd);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #ff8098;
+    white-space: pre-wrap;
+    margin-top: 12px;
+}
+
+/* ── Terminal card ──────────────────────────────────────── */
+.terminal-card {
+    background: var(--card);
+    border: 1.5px solid var(--cyan-bd);
+    border-radius: var(--radius-lg);
+    padding: 22px 26px;
+    min-height: 200px;
+    font-size: 1rem;
+    line-height: 1.8;
+    word-break: break-word;
+    position: relative;
+    overflow: hidden;
+}
+
+.terminal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: scan 5s ease-in-out infinite;
+    opacity: 0.35;
+}
+
+@keyframes scan {
+    0%   { transform: translateY(0);    opacity: 0; }
+    8%   { opacity: 0.35; }
+    92%  { opacity: 0.35; }
+    100% { transform: translateY(200px); opacity: 0; }
+}
+
+.terminal-card-eve { border-color: var(--red-bd); color: #ffc0cc; }
+.terminal-card-eve::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+
+.rx-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+
+.type-badge {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    padding: 2px 11px;
+    border-radius: 4px;
+    border: 1.5px solid var(--cyan-bd);
+    background: var(--cyan-lo);
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+.type-badge-eve { border-color: var(--red-bd); background: var(--red-lo); color: var(--red); }
+.rx-time { font-size: 0.85rem; color: var(--muted); }
+
+.alert-error {
+    background: rgba(255, 45, 85, 0.07);
+    border: 1.5px solid var(--red-bd);
+    border-radius: var(--radius);
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    color: #ff8098;
+    margin-bottom: 14px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   POPUP ERREURS
+════════════════════════════════════════════════════════════ */
+.error-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.error-popup {
+    background: var(--panel);
+    border: 1.5px solid var(--red-bd);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    width: 560px;
+    max-width: 94vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 0 48px rgba(255, 45, 85, 0.15);
+}
+
+.error-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.error-popup-title {
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--red);
+    text-transform: uppercase;
+}
+
+.error-popup-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.error-popup-close:hover { color: var(--text); }
+
+.error-popup-body {
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error-entry {
+    background: var(--card);
+    border-left: 3px solid var(--red);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 10px 14px;
+}
+
+.error-entry-prog {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+}
+
+.error-entry-msg {
+    font-size: 0.85rem;
+    color: #ff8098;
+    line-height: 1.5;
+}
+
+.error-popup-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* STYLES DU POPUP */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+}
+.modal-content-blue {
+    background: #04121a; border: 1.5px solid var(--cyan-bd); border-radius: var(--radius-lg);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.15); display: flex; flex-direction: column;
+}
+.modal-header-blue {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; background: rgba(0, 212, 255, 0.1); border-bottom: 1px solid var(--cyan-bd);
+}
+.modal-title-blue { font-family: var(--font-ui); font-size: 1.2rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.15em; }
+
+.team-footer {
+    margin-top: 40px;
+    width: 700px;
+    max-width: 96vw;
+    border-top: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.team-school {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0.7;
+}
+
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 24px;
+    padding: 12px;
+    border-radius: var(--radius);
+    background: var(--card-lo);
+}
+
+.team-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px;
+    border: 0.1px dashed var(--cyan);
+    border-radius: var(--radius);
+
+}
+
+.team-role-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.team-names {
+    font-size: 0.78rem;
+    color: var(--text);
+    opacity: 0.75;
+    text-align: center;
+}
+
+/* =========================================
+    STYLES DE LA CARTE TACTIQUE (RÉINTÉGRÉS)
+========================================= */
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    background-color: var(--panel, #050b10);
+    border: 2px solid var(--cyan-bd);
+    border-radius: var(--radius-lg, 8px);
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 0 50px rgba(0, 212, 255, 0.1);
+}
+
+.map-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.2) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center center;
+    pointer-events: none;
+}
+
+.radar-scan {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 200%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan));
+    transform-origin: left center;
+    animation: radar-spin 4s linear infinite;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+@keyframes radar-spin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.node {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-ui); font-weight: bold;
+    cursor: grab;
+    transform: translate(-50%, -50%);
+    transition: box-shadow 0.2s;
+    user-select: none;
+    z-index: 10;
+}
+
+.node:active { cursor: grabbing; }
+
+.node-label {
+    position: absolute;
+    top: 45px;
+    font-size: 0.8rem;
+    background: rgba(0,0,0,0.7);
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.node-alice { background: var(--cyan-lo); border: 2px solid var(--cyan); color: var(--cyan); }
+.node-bob { background: rgba(0, 240, 128, 0.2); border: 2px solid var(--green); color: var(--green); }
+.node-eve { background: var(--red-lo); border: 2px solid var(--red); color: var(--red); }
+.node:hover { box-shadow: 0 0 15px currentColor; }
+
+.exclusion-zone {
+    position: absolute;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.zone-alice { background: rgba(0, 170, 255, 0.05); border: 1px dashed var(--cyan); }
+.zone-bob { background: rgba(0, 240, 128, 0.05); border: 1px dashed var(--green); }
+.zone-eve { background: rgba(255, 0, 60, 0.05); border: 1px dashed var(--red); }
+
+.distance-line {
+    position: absolute;
+    height: 2px;
+    background: dashed 2px;
+    transform-origin: left center;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.6;
+}
+.line-ab { border-top: 2px dashed var(--green); }
+.line-ae { border-top: 2px dashed var(--red); }
+
+.info-panel {
+    background: var(--card);
+    border: 1px solid var(--cyan-bd);
+    padding: 15px 25px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    font-family: var(--font-mono);
+}
+.info-data { font-size: 1.2rem; font-weight: bold; }
+.data-ab { color: var(--green); }
+.data-ae { color: var(--red); }
+
+/* Dimensionnement adaptatif du popup principal */
+.tactical-modal-content {
+    width: 80vw;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Corps du modal qui occupe l'espace restant */
+.tactical-modal-body {
+    flex: 1;
+    padding: 3vh 2vw;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Grille flexible : Carte à gauche, Réglages à droite */
+.tactical-split-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
+    height: 100%;
+    width: 100%;
+}
+
+/* --- Colonne Gauche (Carte) --- */
+.tactical-left {
+    flex: 7; /* La carte prend 70%) de place */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Force la carte à prendre 100% de la hauteur de sa colonne */
+.tactical-left .map-container {
+    flex: 1; 
+    margin-bottom: 0;
+    height: auto; 
+}
+
+/* --- Colonne Droite (Réglages) --- */
+.tactical-right {
+    flex: 3; /* Les réglages prennent 30% de l'espace */
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    overflow-y: auto; 
+    padding-right: 1vw; /* Petite marge pour la barre de défilement si l'écran est petit */
+}
+
+/* En-tête des réglages */
+.tactical-settings-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5vh;
+    border-bottom: 1px solid var(--cyan-bd);
+}
+
+.tactical-settings-title {
+    font-family: var(--font-ui);
+    font-size: 1.1rem;
+    color: var(--cyan);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.switch-margin-zero { margin: 0; }
+
+/* Conteneur des blocs Bob et Eve */
+.tactical-panels-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+}
+
+/* Blocs individuels Bob / Eve */
+.tactical-panel {
+    border-radius: 8px;
+    padding: 2.5vh 2vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.panel-bob { background: rgba(0, 240, 128, 0.05); border: 1px solid var(--green); }
+.panel-eve { background: rgba(255, 45, 85, 0.05); border: 1px solid var(--red); }
+
+.panel-distance { font-family: var(--font-mono); font-size: 1.1rem; }
+.panel-distance span { font-size: 1.4rem; font-weight: bold; }
+
+/* Champs de saisie */
+.param-fields {
+    display: none; /* Masqué par défaut (JS gère l'affichage) */
+    justify-content: center;
+}
+.param-active {
+    display: flex; /* Utilisé pour le BSC qui est actif par défaut */
+}
+
+.param-group {
+    width: 60%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.label-bob { color: var(--green); }
+.label-eve { color: var(--red); }
+
+/* Footer du Modal */
+.tactical-right-footer {
+    margin-top: auto; /* Pousse ce bloc tout en bas de la colonne de droite */
+    padding-top: 2.5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+
+.footer-hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* ── Masquer les flèches des inputs numériques ── */
+/* Pour Chrome */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Pour Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* ── Toggle Switch */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0px 10px 0px;
+}
+
+.toggle-label {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.toggle-label.active-online { color: var(--cyan); text-shadow: var(--cyan-glow); }
+.toggle-label.active-offline { color: var(--amber); text-shadow: 0 0 10px rgba(255,183,0,0.5); }
+
+.cyber-switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 26px;
+}
+
+.cyber-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cyber-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 212, 255, 0.1);
+    border: 1.5px solid var(--cyan-bd);
+    border-radius: 13px;
+    transition: .4s;
+}
+
+.cyber-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3.5px;
+    background-color: var(--cyan);
+    border-radius: 50%;
+    transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Effet de rebond */
+    box-shadow: var(--cyan-glow);
+}
+
+/* État coché (Hors ligne -> Ambre) */
+input:checked + .cyber-slider {
+    background-color: rgba(255, 183, 0, 0.1);
+    border-color: rgba(255, 183, 0, 0.4);
+}
+
+input:checked + .cyber-slider:before {
+    transform: translateX(28px);
+    background-color: var(--amber);
+    box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+}
+
+
+/* ───────────────────────────────────── RESPONSIVE DESIGN ───────────────────────────────────── */
+/* Si l'écran est plus étroit que 1000px, on change le design */
+@media (max-width: 1000px) {
+
+    .login-title {
+        font-size: 2.2rem;
+    }
+
+    .login-sub {
+        font-size: 0.95rem;
+    }
+
+    .role-grid {
+        grid-template-columns: 1fr; /* Empile les 3 boutons verticalement */
+        width: 100%;                 /* Force la largeur à 90% de l'écran */
+        max-width: none;            /* Annule l'ancienne limite (ex: 400px ou 850px) */
+    }
+
+    .role-btn {
+        padding: 20px 8%; /* Ajuste l'espace interne pour un bouton très large */
+        flex-direction: row; /* Met l'icône et le texte sur la même ligne */
+        justify-content: flex-start; /* Aligne le contenu à gauche */
+        text-align: left;
+    }
+
+    .tactical-modal {
+            padding: 0;
+    }
+
+    .tactical-modal-content {
+        width: 100%;
+        height: 100dvh; 
+        max-height: 100dvh; 
+        border-radius: 0;
+        border: none;
+    }
+
+    .tactical-modal-body {
+        overflow-y: auto; 
+    }
+    
+    .tactical-split-layout {
+        flex-direction: column; 
+        height: auto; 
+    }
+    
+    .tactical-left {
+        flex: none;
+        height: 50vh; 
+        min-height: 350px; /* Sécurité pour ne pas trop écraser la carte */
+        margin-bottom: 20px;
+    }
+    
+    .tactical-right {
+        flex: none;
+        overflow-y: visible; 
+    }
+
+    .login-title {
+        font-size: 2.2rem;
+    }
+    .modal-title-blue {
+        font-size: 1rem;
+    }
+    .login-sub {
+        font-size: 0.95rem;
+    }
+
+    .role-icon {
+        font-size: 2rem;
+        margin-right: 15px;
+    }
+
+    .team-col {
+        flex: 1 1 100%; /* Chaque membre de l'équipe prend une ligne entière */
+    }
+
+    /* 1. On modifie la grille pour empiler les éléments verticalement */
+    .terminal-body {
+        grid-template-columns: 1fr; /* Une seule colonne qui prend 100% */
+        grid-template-rows: var(--topbar-h) auto 1fr; /* Topbar, puis Sidebar (taille auto), puis Main */
+        height: auto; /* On annule la hauteur fixe */
+        min-height: 100vh;
+        overflow-y: auto; /* On autorise la page entière à défiler */
+    }
+
+    /* 2. On ajuste la barre latérale (Sidebar) */
+    .sidebar {
+        grid-column: 1; /* Reste dans la colonne 1 */
+        grid-row: 2; /* Passe à la ligne 2, juste sous la Topbar */
+        border-right: none; /* On enlève la bordure droite... */
+        border-bottom: 2px solid var(--cyan-bd); /* ...pour la mettre en bas */
+        height: auto; /* La sidebar s'agrandit pour montrer tout son contenu */
+        overflow-y: visible; /* Elle ne défile plus en interne */
+        padding: 20px 15px;
+    }
+
+    /* 3. On ajuste le panneau principal (Main Panel) */
+    .main-panel {
+        grid-column: 1;
+        grid-row: 3; /* Passe à la ligne 3, tout en bas */
+        padding: 20px 15px; /* Marges réduites pour petits écrans */
+        height: auto;
+        overflow-y: visible;
+    }
+
+    /* 4. Petits ajustements UI pour le mobile */
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .topbar-title {
+        font-size: 0.9rem; /* Légèrement plus petit */
+        letter-spacing: 0.1em;
+    }
+
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 3px 8px;
+    }
+
+    /* Flexbox */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar > * {
+        order: 4; 
+    }
+
+    .identity-block {
+        order: 1;
+    }
+    #sp1 {
+        order: 2;
+    }
+    #btn-logout { 
+        order: 3;
+        padding-bottom: 10px;
+    }
+    #btn-init {
+        order: 5;
+    }
+    .tactical-left {
+        flex: none;
+        height: 65vh;
+        min-height: 450px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    .tactical-panel {
+        padding: 2vw 2vw;
+    }
+    .error-popup-footer {
+        flex-direction: column;
+    }
+}
